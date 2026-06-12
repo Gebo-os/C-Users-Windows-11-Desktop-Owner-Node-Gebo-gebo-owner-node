@@ -16,6 +16,7 @@ Current focus:
 Current runtime default:
 - Ollama micro model: `llama3.2:1b`
 - Ollama fallback model: `llama3.2:3b`
+- Owner Node chat server: `06-Code/owner_node_server.py`
 
 Current live edge:
 - Cloudflare quick tunnel to the local Gebo preview
@@ -26,6 +27,7 @@ Most important docs:
 - `docs/FORTUNE500_AUDIT.md`
 - `docs/FINAL_ACCESS_LINKS.md`
 - `docs/TUNNEL_LAYER.md`
+- `docs/CHAT_SURFACE.md`
 - `docs/BENCHMARK_RESULTS.md`
 - `docs/MODEL_POLICY.md`
 - `docs/INTEGRATION_LADDER.md`
