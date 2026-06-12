@@ -5,11 +5,11 @@ Do not expose an unauthenticated Ollama or Open WebUI instance directly to the p
 ## Recommended Path
 
 Internet
-→ Cloudflare Tunnel
-→ Authentication
-→ Open WebUI
-→ Gebo Owner Node
-→ Ollama Models
+-> Cloudflare Tunnel
+-> Authentication
+-> Open WebUI
+-> Gebo Owner Node
+-> Ollama Models
 
 ## Why this path
 
