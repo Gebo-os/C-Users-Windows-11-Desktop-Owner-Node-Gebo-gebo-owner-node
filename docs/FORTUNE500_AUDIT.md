@@ -23,7 +23,7 @@ What does not exist yet:
 
 The biggest blocker is runtime availability, not design.
 
-Ollama is not installed on this machine, so no model can be pulled here yet.
+Ollama is installed on this machine now, and the local micro model was pulled successfully. The remaining gap is a finished application runtime and auth-backed deployment.
 
 ## Security Audit
 
@@ -38,28 +38,37 @@ Risk:
 ## Small Model Recommendation
 
 Best starting model for a low-RAM local setup:
-- `qwen2.5:3b-instruct` for stronger multi-step reasoning
-
-Smallest fallback if memory is very tight:
 - `llama3.2:1b`
+
+Fallback model:
+- `llama3.2:3b`
 
 If Ollama is installed later, the pull command is:
 
 ```bash
-ollama pull qwen2.5:3b-instruct
+ollama pull llama3.2:1b
 ```
+
+## Benchmark Outcome
+
+- `llama3.2:1b` averaged `28,460 ms`
+- `llama3.2:3b` averaged `58,815.33 ms`
+
+Decision:
+- default to `llama3.2:1b`
+- keep `llama3.2:3b` as the heavier fallback
 
 ## Operational Summary
 
 Status:
 - Repo structure: strong
-- Runtime: missing
-- Local model: missing
-- Remote access: not live
-- Security posture: good as a plan, not yet deployed
+- Runtime: partial
+- Local model: present
+- Remote access: live via quick tunnel
+- Security posture: good as a plan, not yet fully hardened for production
 
 ## Highest-Leverage Next Step
 
-Install and verify Ollama locally, then add Open WebUI behind authentication.
+Install and verify Open WebUI behind authentication, then harden the tunnel into a persistent named tunnel.
 
-Only after that should the mobile entry point be treated as real.
+Only after that should the mobile entry point be treated as production-ready.
