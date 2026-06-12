@@ -15,7 +15,7 @@ Use this on the same Windows machine where the Owner Node runs.
 Best live option:
 
 ```text
-https://<your-cloudflare-tunnel-domain>
+https://career-flex-extra-res.trycloudflare.com
 ```
 
 Fallback only on the same Wi-Fi network:
@@ -44,4 +44,5 @@ Do not expose this directly to the public internet.
 
 ## Reality Check
 
-These are target links, not live links, until the runtime and tunnel exist.
+The Cloudflare quick tunnel above is live for this session.
+The localhost link remains the best local laptop link.
