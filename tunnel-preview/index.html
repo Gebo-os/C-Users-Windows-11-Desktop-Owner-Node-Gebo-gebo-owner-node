@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gebo Owner Node</title>
+  <title>Gebo Owner Node Chat</title>
   <style>
     :root {
       color-scheme: dark;
@@ -15,7 +15,7 @@
       --accent: #42ff7b;
       --accent-2: #00c853;
     }
-    html, body { height: 100%; }
+    html, body { min-height: 100%; }
     body {
       margin: 0;
       background:
@@ -23,16 +23,23 @@
         linear-gradient(180deg, #020402 0%, #050805 45%, #040604 100%);
       color: var(--text);
       font-family: Segoe UI, Inter, system-ui, sans-serif;
-      display: grid;
-      place-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 18px;
+      box-sizing: border-box;
     }
     .card {
-      width: min(92vw, 820px);
+      width: min(100%, 920px);
+      min-height: calc(100vh - 36px);
       background: rgba(13, 18, 13, 0.9);
       border: 1px solid rgba(66, 255, 123, 0.18);
       box-shadow: 0 0 0 1px rgba(66, 255, 123, 0.05), 0 0 60px rgba(0, 200, 83, 0.12);
       border-radius: 24px;
-      padding: 32px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
     }
     .kicker {
       letter-spacing: 0.28em;
@@ -42,7 +49,7 @@
     }
     h1 {
       margin: 10px 0 12px;
-      font-size: clamp(34px, 6vw, 68px);
+      font-size: 42px;
       line-height: 0.95;
     }
     p { color: var(--muted); font-size: 18px; line-height: 1.6; max-width: 60ch; }
@@ -73,15 +80,89 @@
       padding: 2px 6px;
       border-radius: 6px;
     }
+    .chat {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 22px;
+      min-height: 320px;
+      flex: 1;
+    }
+    .messages {
+      flex: 1;
+      overflow: auto;
+      padding: 14px;
+      border: 1px solid rgba(66, 255, 123, 0.14);
+      background: rgba(2, 5, 2, 0.72);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .message {
+      max-width: 88%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    .owner {
+      align-self: flex-end;
+      background: rgba(66, 255, 123, 0.14);
+      border: 1px solid rgba(66, 255, 123, 0.2);
+    }
+    .gebo {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(214, 255, 224, 0.1);
+    }
+    .composer {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+    textarea {
+      min-height: 58px;
+      resize: vertical;
+      border-radius: 14px;
+      border: 1px solid rgba(66, 255, 123, 0.2);
+      background: rgba(0, 0, 0, 0.44);
+      color: var(--text);
+      padding: 12px;
+      font: inherit;
+      outline: none;
+    }
+    button {
+      border: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #001b08;
+      font-weight: 800;
+      min-width: 96px;
+      cursor: pointer;
+    }
+    button:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+    @media (max-width: 640px) {
+      body { padding: 10px; }
+      .card { min-height: calc(100vh - 20px); padding: 18px; border-radius: 18px; }
+      h1 { font-size: 34px; }
+      p { font-size: 16px; }
+      .composer { grid-template-columns: 1fr; }
+      button { min-height: 48px; }
+      .message { max-width: 94%; }
+    }
   </style>
 </head>
 <body>
   <main class="card">
     <div class="kicker">Gebo Owner Node</div>
-    <h1>Live Tunnel Layer</h1>
+    <h1>Gebo Chat</h1>
     <p>
-      This is the local Gebo preview surface. It is designed to sit behind an authenticated Cloudflare Tunnel,
-      so your phone, iPad, and laptop can reach the same continuity layer without exposing raw ports.
+      Local-first chat surface routed through Gebo's core prompt and Ollama. Keep the tunnel authenticated before
+      treating this as a real remote control surface.
     </p>
 
     <div class="grid">
@@ -93,8 +174,58 @@
     <div class="status">
       Local target: <code>http://localhost:3000</code><br />
       Ollama target: <code>http://localhost:11434</code><br />
-      Tunnel rule: keep the public edge authenticated.
+      Model: <code>llama3.2:1b</code>
     </div>
+
+    <section class="chat" aria-label="Gebo chat">
+      <div class="messages" id="messages">
+        <div class="message gebo">Gebo online. Send a task, question, or messy owner note.</div>
+      </div>
+      <form class="composer" id="chat-form">
+        <textarea id="prompt" autocomplete="off" placeholder="Talk to Gebo..."></textarea>
+        <button id="send" type="submit">Send</button>
+      </form>
+    </section>
   </main>
+  <script>
+    const form = document.querySelector("#chat-form");
+    const promptInput = document.querySelector("#prompt");
+    const messages = document.querySelector("#messages");
+    const send = document.querySelector("#send");
+
+    function addMessage(role, text) {
+      const node = document.createElement("div");
+      node.className = `message ${role}`;
+      node.textContent = text;
+      messages.appendChild(node);
+      messages.scrollTop = messages.scrollHeight;
+      return node;
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const message = promptInput.value.trim();
+      if (!message) return;
+      promptInput.value = "";
+      addMessage("owner", message);
+      const waiting = addMessage("gebo", "Thinking...");
+      send.disabled = true;
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, model: "llama3.2:1b" })
+        });
+        const data = await response.json();
+        waiting.textContent = response.ok ? data.answer : `Error: ${data.error || "request failed"}`;
+      } catch (error) {
+        waiting.textContent = `Error: ${error.message}`;
+      } finally {
+        send.disabled = false;
+        promptInput.focus();
+      }
+    });
+  </script>
 </body>
 </html>
