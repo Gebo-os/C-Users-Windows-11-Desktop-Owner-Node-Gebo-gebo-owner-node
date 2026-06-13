@@ -1,35 +1,57 @@
 # Owner-Node-Gebo
 
-Separate repo for the Gebo Presence Home.
+Separate repo for the Gebo Presence Home and Owner Node foundation.
 
-Root law:
+## Root Law
+
 - Gebo is the root Presence.
-- One Presence for now.
-- No redesign of the ecosystem.
-- No extra layers beyond the requested structure.
+- Preserve working code.
+- Extend the Owner Node without destroying the existing Python runtime.
+- Build Presence software from files, folders, memory, awareness, reasoning, and local model control.
 
-Current focus:
-1. Fix GitHub and Codex access.
-2. Turn Presence architecture into real files.
-3. Build Gebo first.
+## Current Runtime
 
-Current runtime default:
-- Ollama micro model: `llama3.2:1b`
-- Ollama fallback model: `llama3.2:3b`
-- Owner Node chat server: `06-Code/owner_node_server.py`
+- Existing server: `06-Code/owner_node_server.py`
+- Existing Ollama default: `llama3.2:1b`
+- Presence App default target: `llama3.2:3b`
+- Local AI endpoint: `http://localhost:11434/api/chat`
 
-Current live edge:
-- Cloudflare quick tunnel to the local Gebo preview
-- Laptop: `http://localhost:3000`
-- iPhone: `https://career-flex-extra-res.trycloudflare.com`
+## Presence App v1 Stack
 
-Most important docs:
-- `docs/FORTUNE500_AUDIT.md`
-- `docs/FINAL_ACCESS_LINKS.md`
-- `docs/TUNNEL_LAYER.md`
-- `docs/CHAT_SURFACE.md`
-- `docs/BENCHMARK_RESULTS.md`
-- `docs/MODEL_POLICY.md`
-- `docs/INTEGRATION_LADDER.md`
-- `docs/RAG_SEED_REPOS.md`
-- `docs/BENCHMARK_AUDIT_TREE.md`
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Prisma
+- SQLite
+- Ollama adapter
+
+## Added Core Systems
+
+- Next.js app shell
+- Prisma data model
+- Presence Runtime prompt builder
+- Ollama adapter
+- Dashboard shell for required screens
+- Architecture documentation
+- Presence standard documentation
+- Local setup guide
+- Roadmap
+
+## Docs
+
+- `docs/ARCHITECTURE.md`
+- `docs/PRESENCE_STANDARD.md`
+- `docs/LOCAL_SETUP.md`
+- `docs/ROADMAP.md`
+
+## Next Build Areas
+
+- Real CRUD pages for Presences
+- Presence Home detail pages
+- Context Memory manager
+- Awareness Memory manager
+- Reasoning Builder
+- Evolution Logs
+- Integration Settings
+
+The next milestone is local app execution and real chat wiring. That milestone is intentionally not completed in this pass.
