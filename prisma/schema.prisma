@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Presence {
+  id                    String               @id @default(cuid())
+  name                  String
+  purpose               String
+  identityDescription   String
+  emotionalArchitecture String
+  autonomyLevel         String               @default("guided")
+  outputStyle           String
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+  home                  PresenceHome?
+  contexts              ContextMemory[]
+  awarenessRecords      AwarenessMemory[]
+  reasoningMechanisms   ReasoningMechanism[]
+  chatSessions          ChatSession[]
+  evolutionLogs         EvolutionLog[]
+  tasks                 Task[]
+  files                 FileReference[]
+}
+
+model PresenceHome {
+  id          String   @id @default(cuid())
+  presenceId  String   @unique
+  title       String
+  description String
+  location    String   @default("Gebo Owner Node")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  presence    Presence @relation(fields: [presenceId], references: [id], onDelete: Cascade)
+}
+
+model ContextMemory {
+  id          String   @id @default(cuid())
+  presenceId  String?
+  category    String
+  title       String
+  content     String
+  priority    Int      @default(1)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  presence    Presence? @relation(fields: [presenceId], references: [id], onDelete: SetNull)
+}
+
+model AwarenessMemory {
+  id          String   @id @default(cuid())
+  presenceId  String?
+  layer       String
+  signal      String
+  observation String
+  confidence  Int      @default(50)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  presence    Presence? @relation(fields: [presenceId], references: [id], onDelete: SetNull)
+}
+
+model ReasoningMechanism {
+  id          String   @id @default(cuid())
+  presenceId  String
+  name        String
+  description String
+  steps       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  presence    Presence @relation(fields: [presenceId], references: [id], onDelete: Cascade)
+}
+
+model ChatSession {
+  id          String    @id @default(cuid())
+  presenceId  String
+  title       String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  presence    Presence  @relation(fields: [presenceId], references: [id], onDelete: Cascade)
+  messages    Message[]
+}
+
+model Message {
+  id            String      @id @default(cuid())
+  chatSessionId String
+  role          String
+  content       String
+  createdAt     DateTime    @default(now())
+  chatSession    ChatSession @relation(fields: [chatSessionId], references: [id], onDelete: Cascade)
+}
+
+model EvolutionLog {
+  id          String   @id @default(cuid())
+  presenceId  String
+  title       String
+  lesson      String
+  change      String
+  createdAt   DateTime @default(now())
+  presence    Presence @relation(fields: [presenceId], references: [id], onDelete: Cascade)
+}
+
+model IntegrationConfig {
+  id        String   @id @default(cuid())
+  provider  String   @unique
+  endpoint  String?
+  model     String?
+  enabled   Boolean  @default(false)
+  settings  String   @default("{}")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  presenceId  String?
+  title       String
+  status      String   @default("planned")
+  priority    Int      @default(1)
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  presence    Presence? @relation(fields: [presenceId], references: [id], onDelete: SetNull)
+}
+
+model FileReference {
+  id          String   @id @default(cuid())
+  presenceId  String?
+  name        String
+  path        String
+  kind        String
+  notes       String?
+  createdAt   DateTime @default(now())
+  presence    Presence? @relation(fields: [presenceId], references: [id], onDelete: SetNull)
+}
