@@ -1,0 +1,19 @@
+{
+  "appId": "com.gebo.presence",
+  "productName": "Gebo Presence App",
+  "directories": {
+    "output": "dist-desktop"
+  },
+  "files": [
+    "desktop/**/*",
+    "app/**/*",
+    "components/**/*",
+    "lib/**/*",
+    "prisma/**/*",
+    "package.json",
+    "next.config.mjs"
+  ],
+  "win": {
+    "target": "nsis"
+  }
+}
