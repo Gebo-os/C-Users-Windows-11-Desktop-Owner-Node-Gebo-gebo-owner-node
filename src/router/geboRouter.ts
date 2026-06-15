@@ -6,6 +6,7 @@ import type {
   GeboTool,
   GeboWorkflow,
 } from "./types";
+import { captureFromRoute } from "../memory/memoryStore.js";
 
 const realtimeTerms = [
   "latest",
@@ -208,7 +209,7 @@ export function routeGeboInput(rawInput: string): GeboRouteDecision {
     reason = "Input contains relational, emotional, feminine-supportive, or confidence-related context.";
   }
 
-  return {
+  const decision: GeboRouteDecision = {
     input,
     intent,
     domain,
@@ -223,4 +224,9 @@ export function routeGeboInput(rawInput: string): GeboRouteDecision {
     reason,
     flags,
   };
+
+  // capture memory when relevant
+  captureFromRoute({ input, memoryTarget, intent, reason });
+
+  return decision;
 }
