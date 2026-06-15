@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Prompt stack repo update",
+    "input": "add 5 deep STL output layers to the prompt stack",
+    "expected": {
+      "primaryPresence": "slatt_tool",
+      "tool": "github",
+      "workflow": "codex_build_flow",
+      "outputMode": "repo_action_summary",
+      "requiresRealtime": false
+    }
+  },
+  {
+    "name": "Realtime STL news",
+    "input": "what is the latest KMOV news in St. Louis today?",
+    "expected": {
+      "primaryPresence": "news_router",
+      "tool": "web",
+      "workflow": "realtime_news_check",
+      "outputMode": "realtime_news_read",
+      "requiresRealtime": true
+    }
+  },
+  {
+    "name": "Execution pressure",
+    "input": "do it, build the next move now",
+    "expected": {
+      "primaryPresence": "lockin",
+      "workflow": "prompt_to_product",
+      "outputMode": "step_flow"
+    }
+  },
+  {
+    "name": "Architecture layer request",
+    "input": "give me a Gebo Max Presence architecture layer",
+    "expected": {
+      "primaryPresence": "gebo_core",
+      "workflow": "presence_activation",
+      "outputMode": "architecture_spec",
+      "memoryTarget": "architecture_decision"
+    }
+  },
+  {
+    "name": "Mya emotional support",
+    "input": "have Mya make this message more supportive and emotional",
+    "expected": {
+      "primaryPresence": "mya",
+      "outputMode": "stl_light",
+      "memoryTarget": "output_pattern"
+    }
+  }
+]
