@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "db:push": "prisma db push",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "router:demo": "tsx scripts/demoRoute.ts",
+    "router:eval": "tsx scripts/runRouterEval.ts"
   },
   "dependencies": {
     "@prisma/client": "latest",
@@ -23,6 +25,7 @@
     "autoprefixer": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",
+    "tsx": "latest",
     "typescript": "latest"
   }
 }
